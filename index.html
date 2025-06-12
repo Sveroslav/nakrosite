@@ -227,6 +227,13 @@
             font-weight: bold;
         }
 
+        #loading-message {
+            text-align: center;
+            color: #e0aaff;
+            font-weight: bold;
+            margin-top: 1em;
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -286,6 +293,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Lade-/Statusnachricht -->
+    <div id="loading-message"></div>
 
     <!-- Checkout Formular -->
     <div id="checkout" class="checkout-form">
@@ -453,6 +463,14 @@
         }
 
         function confirmOrder() {
+            const loadingMsg = document.getElementById('loading-message');
+            loadingMsg.innerText = 'Bitte warten, die Bestellung wird verarbeitet...';
+
+            // Timeout nach 35 Sekunden
+            const timeoutId = setTimeout(() => {
+                loadingMsg.innerText = 'Unser Server braucht heute etwas länger. Falls keine Bestätigung kommt, bitte in 30 Sekunden nochmal versuchen!';
+            }, 35000);
+
             const order = {
                 bundesland: document.getElementById('bundesland').value,
                 adresse: document.getElementById('adresse').value,
@@ -469,15 +487,20 @@
             })
             .then(res => res.json())
             .then(data => {
+                clearTimeout(timeoutId);
                 if (data.success) {
+                    loadingMsg.innerText = 'Bestellung erfolgreich gesendet!';
                     document.getElementById("checkout").style.display = "none";
                     document.getElementById("crypto-payment").style.display = "block";
                     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 } else {
+                    loadingMsg.innerText = 'Bestellung fehlgeschlagen!';
                     alert('Bestellung fehlgeschlagen!');
                 }
             })
             .catch(() => {
+                clearTimeout(timeoutId);
+                loadingMsg.innerText = 'Es gab ein Problem beim Senden der Bestellung!';
                 alert('Es gab ein Problem beim Senden der Bestellung!');
             });
         }
