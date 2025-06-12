@@ -284,6 +284,30 @@
                 right: 12px;
             }
         }
+         .close-btn {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    background: transparent;
+    border: none;
+    color: #eee;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 100;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.close-btn:hover {
+    color: var(--error);
+}
+@media (max-width: 600px) {
+    .close-btn {
+        font-size: 2rem;
+        top: 10px;
+        right: 12px;
+    }
+        }
     </style>
 </head>
 <body>
@@ -325,53 +349,53 @@
 
     <!-- Checkout Formular -->
     <div id="checkout" class="checkout-form">
-        <button class="close-btn" title="Schließen" onclick="closeCheckout()">&times;</button>
-        <h2>Lieferadresse</h2>
-        <div class="form-group">
-            <label for="bundesland" class="required">Bundesland</label>
-            <select id="bundesland" required>
-                <option value="">-- Bitte wählen --</option>
-                <option>Baden-Württemberg</option>
-                <option>Bayern</option>
-                <option>Berlin</option>
-                <option>Brandenburg</option>
-                <option>Bremen</option>
-                <option>Hamburg</option>
-                <option>Hessen</option>
-                <option>Mecklenburg-Vorpommern</option>
-                <option>Niedersachsen</option>
-                <option>Nordrhein-Westfalen</option>
-                <option>Rheinland-Pfalz</option>
-                <option>Saarland</option>
-                <option>Sachsen</option>
-                <option>Sachsen-Anhalt</option>
-                <option>Schleswig-Holstein</option>
-                <option>Thüringen</option>
-            </select>
-            <div id="bundesland-error" class="error-message">Bitte Bundesland auswählen</div>
-        </div>
-        <div class="form-group">
-            <label for="adresse" class="required">Straße & Hausnummer</label>
-            <input type="text" id="adresse" placeholder="Musterstraße 123" required>
-            <div id="adresse-error" class="error-message">Bitte Adresse eingeben</div>
-        </div>
-        <div class="form-group">
-            <label for="plz" class="required">Postleitzahl</label>
-            <input type="text" id="plz" placeholder="10115" required pattern="[0-9]{5}">
-            <div id="plz-error" class="error-message">Bitte 5-stellige PLZ eingeben</div>
-        </div>
-        <div class="form-group">
-            <label for="email" class="required">Email</label>
-            <input type="email" id="email" placeholder="beispiel@email.de" required>
-            <div id="email-error" class="error-message">Bitte gültige Email eingeben</div>
-        </div>
-        <div class="form-group">
-            <label for="wallet" class="required">Wallet-Adresse (BTC/ETH/LTC)</label>
-            <input type="text" id="wallet" placeholder="Deine Krypto-Adresse" required>
-            <div id="wallet-error" class="error-message">Bitte Wallet-Adresse eingeben</div>
-        </div>
-        <button class="confirm-btn" onclick="validateForm()">Zur Zahlung</button>
+    <button class="close-btn" title="Schließen" onclick="closeCheckout()">&times;</button>
+    <h2>Lieferadresse</h2>
+    <div class="form-group">
+        <label for="bundesland" class="required">Bundesland</label>
+        <select id="bundesland" required>
+            <option value="">-- Bitte wählen --</option>
+            <option>Baden-Württemberg</option>
+            <option>Bayern</option>
+            <option>Berlin</option>
+            <option>Brandenburg</option>
+            <option>Bremen</option>
+            <option>Hamburg</option>
+            <option>Hessen</option>
+            <option>Mecklenburg-Vorpommern</option>
+            <option>Niedersachsen</option>
+            <option>Nordrhein-Westfalen</option>
+            <option>Rheinland-Pfalz</option>
+            <option>Saarland</option>
+            <option>Sachsen</option>
+            <option>Sachsen-Anhalt</option>
+            <option>Schleswig-Holstein</option>
+            <option>Thüringen</option>
+        </select>
+        <div id="bundesland-error" class="error-message">Bitte Bundesland auswählen</div>
     </div>
+    <div class="form-group">
+        <label for="adresse" class="required">Straße & Hausnummer</label>
+        <input type="text" id="adresse" placeholder="Musterstraße 123" required>
+        <div id="adresse-error" class="error-message">Bitte Adresse eingeben</div>
+    </div>
+    <div class="form-group">
+        <label for="plz" class="required">Postleitzahl</label>
+        <input type="text" id="plz" placeholder="10115" required pattern="[0-9]{5}">
+        <div id="plz-error" class="error-message">Bitte 5-stellige PLZ eingeben</div>
+    </div>
+    <div class="form-group">
+        <label for="email" class="required">Email</label>
+        <input type="email" id="email" placeholder="beispiel@email.de" required>
+        <div id="email-error" class="error-message">Bitte gültige Email eingeben</div>
+    </div>
+    <div class="form-group">
+        <label for="wallet" class="required">Wallet-Adresse (BTC/ETH/LTC)</label>
+        <input type="text" id="wallet" placeholder="Deine Krypto-Adresse" required>
+        <div id="wallet-error" class="error-message">Bitte Wallet-Adresse eingeben</div>
+    </div>
+    <button class="confirm-btn" onclick="validateForm()">Zur Zahlung</button>
+</div>
 
     <!-- Zahlungsoptionen -->
     <div id="crypto-payment" class="payment-options">
@@ -540,6 +564,10 @@
         function payWith(crypto) {
             alert(`Zahlung mit ${crypto} gestartet!`);
             // Hier würde die Krypto-Zahlung implementiert werden
+        }
+        function closeCheckout() {
+    document.getElementById("checkout").style.display = "none";
+    document.getElementById("loading-message").innerText = "";
         }
     </script>
 </body>
