@@ -143,6 +143,25 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--primary);
             display: none;
+            position: relative;
+        }
+
+        /* Close button style */
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: #eee;
+            font-size: 1.6rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+        .close-btn:hover {
+            color: var(--error);
         }
 
         h2 {
@@ -257,6 +276,13 @@
             .products {
                 grid-template-columns: 1fr;
             }
+            .checkout-form, .payment-options {
+                padding: 1rem;
+            }
+            .close-btn {
+                top: 12px;
+                right: 12px;
+            }
         }
     </style>
 </head>
@@ -299,6 +325,7 @@
 
     <!-- Checkout Formular -->
     <div id="checkout" class="checkout-form">
+        <button class="close-btn" title="Schließen" onclick="closeCheckout()">&times;</button>
         <h2>Lieferadresse</h2>
         <div class="form-group">
             <label for="bundesland" class="required">Bundesland</label>
@@ -380,6 +407,11 @@
         function addToCart() {
             document.getElementById("checkout").style.display = "block";
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        function closeCheckout() {
+            document.getElementById("checkout").style.display = "none";
+            document.getElementById("loading-message").innerText = "";
         }
 
         // Echtzeit-Validierung für alle Felder
