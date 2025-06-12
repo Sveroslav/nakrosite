@@ -462,7 +462,7 @@
                 produkt: "Premium Produkt",
                 menge: document.getElementById('quantity').value
             };
-            fetch('http://localhost:3000/api/order', {
+            fetch('https://admnarko.onrender.com/api/order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(order)
