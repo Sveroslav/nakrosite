@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narkode | Crypto-Shop</title>
+    <style>
+        :root {
+            --primary: #6a0dad;
+            --secondary: #9b59b6;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --error: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #4b0082);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #fff, #e0aaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .tagline {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .product-card {
+            background: #2d2d2d;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--primary);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(106, 13, 173, 0.3);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, #4b0082, var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-selector select {
+            padding: 0.5rem;
+            background: #333;
+            border: 1px solid var(--primary);
+            color: white;
+            border-radius: 5px;
+            margin-right: 1rem;
+            cursor: pointer;
+            width: 80px;
+        }
+
+        .buy-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(106, 13, 173, 0.6);
+        }
+
+        .checkout-form, .payment-options {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #2d2d2d;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--primary);
+            display: none;
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+        }
+
+        label.required::after {
+            content: " *";
+            color: var(--error);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            background: #333;
+            border: 1px solid var(--primary);
+            color: white;
+            border-radius: 5px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(106, 13, 173, 0.6);
+        }
+
+        .crypto-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .crypto-option:hover {
+            border-color: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .crypto-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+            background: #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .crypto-name {
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            background: #1a1a1a;
+            color: #777;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        input:invalid, select:invalid {
+            border-color: var(--error) !important;
+        }
+
+        @media (max-width: 768px) {
+            .products {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Narkode</h1>
+        <p class="tagline">Exklusive Produkte • Krypto-Zahlungen</p>
+    </header>
+
+    <div class="products">
+        <!-- Produkt 1 -->
+        <div class="product-card">
+            <div class="product-image">
+                PRODUKT BILD
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Premium Produkt</h3>
+                <p class="product-price">0.05 BTC</p>
+                <div class="quantity-selector">
+                    <label for="quantity">Menge:</label>
+                    <select id="quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+                <button class="buy-btn" onclick="addToCart()">Jetzt kaufen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Formular -->
+    <div id="checkout" class="checkout-form">
+        <h2>Lieferadresse</h2>
+        <div class="form-group">
+            <label for="bundesland" class="required">Bundesland</label>
+            <select id="bundesland" required>
+                <option value="">-- Bitte wählen --</option>
+                <option>Baden-Württemberg</option>
+                <option>Bayern</option>
+                <option>Berlin</option>
+                <option>Brandenburg</option>
+                <option>Bremen</option>
+                <option>Hamburg</option>
+                <option>Hessen</option>
+                <option>Mecklenburg-Vorpommern</option>
+                <option>Niedersachsen</option>
+                <option>Nordrhein-Westfalen</option>
+                <option>Rheinland-Pfalz</option>
+                <option>Saarland</option>
+                <option>Sachsen</option>
+                <option>Sachsen-Anhalt</option>
+                <option>Schleswig-Holstein</option>
+                <option>Thüringen</option>
+            </select>
+            <div id="bundesland-error" class="error-message">Bitte Bundesland auswählen</div>
+        </div>
+        <div class="form-group">
+            <label for="adresse" class="required">Straße & Hausnummer</label>
+            <input type="text" id="adresse" placeholder="Musterstraße 123" required>
+            <div id="adresse-error" class="error-message">Bitte Adresse eingeben</div>
+        </div>
+        <div class="form-group">
+            <label for="plz" class="required">Postleitzahl</label>
+            <input type="text" id="plz" placeholder="10115" required pattern="[0-9]{5}">
+            <div id="plz-error" class="error-message">Bitte 5-stellige PLZ eingeben</div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="required">Email</label>
+            <input type="email" id="email" placeholder="beispiel@email.de" required>
+            <div id="email-error" class="error-message">Bitte gültige Email eingeben</div>
+        </div>
+        <div class="form-group">
+            <label for="wallet" class="required">Wallet-Adresse (BTC/ETH/LTC)</label>
+            <input type="text" id="wallet" placeholder="Deine Krypto-Adresse" required>
+            <div id="wallet-error" class="error-message">Bitte Wallet-Adresse eingeben</div>
+        </div>
+        <button class="confirm-btn" onclick="validateForm()">Zur Zahlung</button>
+    </div>
+
+    <!-- Zahlungsoptionen -->
+    <div id="crypto-payment" class="payment-options">
+        <h2>Zahlungsmethode</h2>
+        <div class="crypto-option" onclick="payWith('BTC')">
+            <div class="crypto-icon">B</div>
+            <div>
+                <div class="crypto-name">Bitcoin (BTC)</div>
+                <small>Schnell und sicher</small>
+            </div>
+        </div>
+        <div class="crypto-option" onclick="payWith('ETH')">
+            <div class="crypto-icon">E</div>
+            <div>
+                <div class="crypto-name">Ethereum (ETH)</div>
+                <small>Smart Contracts</small>
+            </div>
+        </div>
+        <div class="crypto-option" onclick="payWith('LTC')">
+            <div class="crypto-icon">L</div>
+            <div>
+                <div class="crypto-name">Litecoin (LTC)</div>
+                <small>Geringe Gebühren</small>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2023 Narkode. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        function addToCart() {
+            document.getElementById("checkout").style.display = "block";
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Echtzeit-Validierung für alle Felder
+        document.getElementById('adresse').addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                document.getElementById('adresse-error').style.display = 'none';
+                this.style.borderColor = 'var(--primary)';
+            }
+        });
+
+        document.getElementById('plz').addEventListener('input', function() {
+            if (/^\d{5}$/.test(this.value)) {
+                document.getElementById('plz-error').style.display = 'none';
+                this.style.borderColor = 'var(--primary)';
+            }
+        });
+
+        document.getElementById('email').addEventListener('input', function() {
+            if (this.checkValidity()) {
+                document.getElementById('email-error').style.display = 'none';
+                this.style.borderColor = 'var(--primary)';
+            }
+        });
+
+        document.getElementById('bundesland').addEventListener('change', function() {
+            if (this.value !== '') {
+                document.getElementById('bundesland-error').style.display = 'none';
+                this.style.borderColor = 'var(--primary)';
+            }
+        });
+
+        document.getElementById('wallet').addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                document.getElementById('wallet-error').style.display = 'none';
+                this.style.borderColor = 'var(--primary)';
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+            const fields = [
+                { id: 'bundesland', error: 'bundesland-error' },
+                { id: 'adresse', error: 'adresse-error' },
+                { id: 'plz', error: 'plz-error' },
+                { id: 'email', error: 'email-error' },
+                { id: 'wallet', error: 'wallet-error' }
+            ];
+
+            fields.forEach(field => {
+                const element = document.getElementById(field.id);
+                const errorElement = document.getElementById(field.error);
+
+                if (field.id === 'plz') {
+                    if (!/^\d{5}$/.test(element.value)) {
+                        errorElement.style.display = 'block';
+                        element.style.borderColor = 'var(--error)';
+                        isValid = false;
+                    }
+                } else if (field.id === 'email') {
+                    if (!element.checkValidity()) {
+                        errorElement.style.display = 'block';
+                        element.style.borderColor = 'var(--error)';
+                        isValid = false;
+                    }
+                } else if (!element.value.trim()) {
+                    errorElement.style.display = 'block';
+                    element.style.borderColor = 'var(--error)';
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                confirmOrder();
+            } else {
+                // Scroll zum ersten Fehler
+                const firstError = document.querySelector('.error-message[style="display: block;"]');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        function confirmOrder() {
+            const order = {
+                bundesland: document.getElementById('bundesland').value,
+                adresse: document.getElementById('adresse').value,
+                plz: document.getElementById('plz').value,
+                email: document.getElementById('email').value,
+                wallet: document.getElementById('wallet').value,
+                produkt: "Premium Produkt",
+                menge: document.getElementById('quantity').value
+            };
+            fetch('http://localhost:3000/api/order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById("checkout").style.display = "none";
+                    document.getElementById("crypto-payment").style.display = "block";
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                } else {
+                    alert('Bestellung fehlgeschlagen!');
+                }
+            })
+            .catch(() => {
+                alert('Es gab ein Problem beim Senden der Bestellung!');
+            });
+        }
+
+        function payWith(crypto) {
+            alert(`Zahlung mit ${crypto} gestartet!`);
+            // Hier würde die Krypto-Zahlung implementiert werden
+        }
+    </script>
+</body>
+</html>
