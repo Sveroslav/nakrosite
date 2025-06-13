@@ -6,186 +6,197 @@
     <title>Narkode | Deine Apotheke Online</title>
     <style>
         :root {
-            --primary: #6a0dad;
-            --secondary: #9b59b6;
-            --dark: #1a1a1a;
-            --light: #f5f5f5;
+            --primary: #23272f;              /* Dunkles seriöses Blau-Grau */
+            --primary-dark: #181b20;
+            --accent: #576cbc;               /* Seriöses, dunkles Blaugrau als Akzent */
+            --background: #181b20;           /* Sehr dunkler Hintergrund */
+            --surface: #222631;
+            --border: #323747;
+            --text: #e8eaf2;
+            --text-secondary: #8d97b1;
             --error: #e74c3c;
-            --success: #2ecc71;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        html, body {
+            height: 100%;
         }
 
         body {
-            background-color: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
+            background: var(--background);
+            color: var(--text);
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary), #4b0082);
-            padding: 1.5rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 2rem 1rem 1.2rem 1rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 12px rgba(44, 74, 63, 0.09);
+            border-radius: 0 0 1.3rem 1.3rem;
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(to right, #fff, #e0aaff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 2.3rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.35em;
+            font-weight: 800;
         }
 
         .tagline {
-            font-style: italic;
-            opacity: 0.8;
+            font-size: 1.07rem;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+            font-weight: 500;
         }
 
         .products {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
             gap: 2rem;
-            padding: 2rem;
+            padding: 2.5rem 1.2rem 1.5rem 1.2rem;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .product-card {
-            background: #2d2d2d;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--primary);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1.3rem;
+            box-shadow: 0 2px 12px rgba(46,139,87,0.04);
+            padding: 1.7rem 1.5rem 1.3rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 325px;
+            transition: box-shadow 0.18s, transform 0.18s;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(106, 13, 173, 0.3);
+            box-shadow: 0 10px 32px rgba(87, 108, 188, 0.13);
+            transform: translateY(-3px) scale(1.01);
         }
 
         .product-image {
-            height: 200px;
-            background: linear-gradient(45deg, #4b0082, var(--primary));
+            width: 100%;
+            height: 135px;
+            background: linear-gradient(100deg, var(--primary-dark) 60%, var(--primary) 100%);
+            border-radius: 0.7rem;
+            margin-bottom: 1.1rem;
+            color: var(--accent);
+            font-size: 1.3rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .product-info {
-            padding: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
         }
 
         .product-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
         }
 
         .product-price {
             font-size: 1.1rem;
-            margin-bottom: 1rem;
-            color: var(--light);
+            color: var(--accent);
+            margin-bottom: 1.1rem;
+            font-weight: 600;
         }
 
         .quantity-selector {
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
+            gap: 0.5rem;
+        }
+
+        .quantity-selector label {
+            color: var(--text-secondary);
+            font-size: 0.97rem;
+            margin-right: 0.4rem;
         }
 
         .quantity-selector select {
-            padding: 0.5rem;
-            background: #333;
-            border: 1px solid var(--primary);
-            color: white;
-            border-radius: 5px;
-            margin-right: 1rem;
-            cursor: pointer;
-            width: 80px;
+            padding: 0.4rem 1.1rem;
+            background: #23272f;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
         }
 
         .buy-btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
+            background: var(--accent);
+            color: #fff;
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
+            padding: 0.8rem 0;
+            border-radius: 0.9rem;
             cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            font-size: 1.1rem;
             width: 100%;
-            box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
+            margin-top: auto;
+            box-shadow: 0 2px 8px rgba(87, 108, 188, 0.14);
+            transition: background 0.14s;
         }
-
         .buy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(106, 13, 173, 0.6);
+            background: #3a4669;
         }
 
         .checkout-form, .payment-options {
-            max-width: 500px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: #2d2d2d;
-            border-radius: 10px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--primary);
+            max-width: 390px;
+            margin: 2.2rem auto;
+            padding: 2.1rem 1.3rem 1.4rem 1.3rem;
+            background: var(--surface);
+            border-radius: 1.2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 18px rgba(87,108,188,0.09);
             display: none;
             position: relative;
         }
 
         .close-btn {
             position: absolute;
-            top: 18px;
+            top: 14px;
             right: 22px;
             background: transparent;
             border: none;
-            color: #fff;
-            font-size: 2rem;
+            color: var(--text-secondary);
+            font-size: 1.9rem;
             font-weight: bold;
             cursor: pointer;
             z-index: 100;
+            transition: color 0.19s;
             line-height: 1;
-            transition: color 0.2s;
         }
         .close-btn:hover {
             color: var(--error);
         }
-        @media (max-width: 600px) {
-            .close-btn {
-                font-size: 2rem;
-                top: 10px;
-                right: 12px;
-            }
-        }
 
         h2 {
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1.0rem;
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 1.35rem;
+            font-weight: 700;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.12rem;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #ccc;
+            margin-bottom: 0.35rem;
+            color: var(--text-secondary);
+            font-size: 0.99rem;
         }
 
         label.required::after {
@@ -195,83 +206,82 @@
 
         select, input {
             width: 100%;
-            padding: 0.8rem;
-            background: #333;
-            border: 1px solid var(--primary);
-            color: white;
-            border-radius: 5px;
+            padding: 0.7rem;
+            background: #23272f;
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 0.6rem;
+            font-size: 1rem;
+            margin-top: 0.07rem;
         }
 
         .confirm-btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
+            background: var(--accent);
+            color: #fff;
             border: none;
             padding: 1rem;
-            border-radius: 5px;
+            border-radius: 0.8rem;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
-            transition: all 0.3s;
-            margin-top: 1rem;
+            font-size: 1rem;
+            margin-top: 1.1rem;
+            letter-spacing: 0.02em;
+            transition: background 0.13s;
         }
 
         .confirm-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(106, 13, 173, 0.6);
+            background: #3a4669;
         }
 
         .crypto-option {
             display: flex;
             align-items: center;
-            padding: 1rem;
+            padding: 0.9rem 0.8rem;
             margin-bottom: 1rem;
-            background: #333;
-            border-radius: 5px;
+            background: #23272f;
+            border-radius: 0.7rem;
             cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid transparent;
+            border: 1px solid var(--border);
+            transition: border 0.14s, background 0.14s;
         }
 
         .crypto-option:hover {
-            border-color: var(--secondary);
-            transform: translateX(5px);
+            border-color: var(--accent);
+            background: #222b3d;
         }
 
         .crypto-icon {
-            width: 40px;
-            height: 40px;
+            width: 37px;
+            height: 37px;
             margin-right: 1rem;
-            background: #444;
+            background: var(--primary-dark);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--accent);
             font-weight: bold;
+            font-size: 1.18rem;
         }
 
         .crypto-name {
             font-weight: bold;
+            color: var(--accent);
         }
 
         #loading-message {
             text-align: center;
-            color: #e0aaff;
+            color: var(--accent);
             font-weight: bold;
             margin-top: 1em;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
-            background: #1a1a1a;
-            color: #777;
+            font-size: 1.05rem;
         }
 
         .error-message {
             color: var(--error);
-            font-size: 0.8rem;
-            margin-top: 0.3rem;
+            font-size: 0.89rem;
+            margin-top: 0.25rem;
             display: none;
         }
 
@@ -279,12 +289,24 @@
             border-color: var(--error) !important;
         }
 
-        @media (max-width: 768px) {
+        footer {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem 1rem;
+            margin-top: 2rem;
+            background: var(--surface);
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            border-radius: 1.3rem 1.3rem 0 0;
+            font-size: 0.98rem;
+        }
+
+        @media (max-width: 600px) {
             .products {
-                grid-template-columns: 1fr;
+                padding: 1.5rem 0.2rem 1rem 0.2rem;
             }
             .checkout-form, .payment-options {
-                padding: 1rem;
+                max-width: 98vw;
+                padding: 1.1rem 0.3rem 1.1rem 0.3rem;
             }
         }
     </style>
@@ -296,7 +318,6 @@
     </header>
 
     <div class="products">
-        <!-- Produkt 1 -->
         <div class="product-card">
             <div class="product-image">
                 PRODUKT BILD
@@ -323,10 +344,8 @@
         </div>
     </div>
 
-    <!-- Lade-/Statusnachricht -->
     <div id="loading-message"></div>
 
-    <!-- Checkout Formular -->
     <div id="checkout" class="checkout-form">
         <button class="close-btn" title="Schließen" onclick="closeCheckout()">&times;</button>
         <h2>Lieferadresse</h2>
@@ -376,7 +395,6 @@
         <button class="confirm-btn" onclick="validateForm()">Zur Zahlung</button>
     </div>
 
-    <!-- Zahlungsoptionen -->
     <div id="crypto-payment" class="payment-options">
         <h2>Zahlungsmethode</h2>
         <div class="crypto-option" onclick="payWith('BTC')">
@@ -407,7 +425,7 @@
     </footer>
 
     <script>
-        // === Einstellungen ===
+        // Einstellungen
         const PRICE_EUR = 15;
         const WALLET = {
             BTC: "DEINE_BTC_WALLET_ADDRESS",
@@ -415,51 +433,47 @@
             LTC: "DEINE_LTC_WALLET_ADDRESS"
         };
 
-        // Produkt in Warenkorb -> Checkout anzeigen
         function addToCart() {
             document.getElementById("checkout").style.display = "block";
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        // Checkout-Formular schließen
         function closeCheckout() {
             document.getElementById("checkout").style.display = "none";
             document.getElementById("loading-message").innerText = "";
         }
 
-        // --- Echtzeit-Validierung für alle Felder ---
         document.getElementById('adresse').addEventListener('input', function() {
             if (this.value.trim() !== '') {
                 document.getElementById('adresse-error').style.display = 'none';
-                this.style.borderColor = 'var(--primary)';
+                this.style.borderColor = 'var(--accent)';
             }
         });
         document.getElementById('plz').addEventListener('input', function() {
             if (/^\d{5}$/.test(this.value)) {
                 document.getElementById('plz-error').style.display = 'none';
-                this.style.borderColor = 'var(--primary)';
+                this.style.borderColor = 'var(--accent)';
             }
         });
         document.getElementById('email').addEventListener('input', function() {
             if (this.checkValidity()) {
                 document.getElementById('email-error').style.display = 'none';
-                this.style.borderColor = 'var(--primary)';
+                this.style.borderColor = 'var(--accent)';
             }
         });
         document.getElementById('bundesland').addEventListener('change', function() {
             if (this.value !== '') {
                 document.getElementById('bundesland-error').style.display = 'none';
-                this.style.borderColor = 'var(--primary)';
+                this.style.borderColor = 'var(--accent)';
             }
         });
         document.getElementById('wallet').addEventListener('input', function() {
             if (this.value.trim() !== '') {
                 document.getElementById('wallet-error').style.display = 'none';
-                this.style.borderColor = 'var(--primary)';
+                this.style.borderColor = 'var(--accent)';
             }
         });
 
-        // --- Formularvalidierung ---
         function validateForm() {
             let isValid = true;
             const fields = [
@@ -493,7 +507,6 @@
             if (isValid) {
                 confirmOrder();
             } else {
-                // Scroll zum ersten Fehler
                 const firstError = document.querySelector('.error-message[style="display: block;"]');
                 if (firstError) {
                     firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -501,14 +514,14 @@
             }
         }
 
-        // --- Bestellung abschließen und Zahlungsoptionen anzeigen ---
         function confirmOrder() {
             const loadingMsg = document.getElementById('loading-message');
             loadingMsg.innerText = 'Bitte warten, die Bestellung wird verarbeitet...';
-            // Timeout nach 35 Sekunden
+
             const timeoutId = setTimeout(() => {
                 loadingMsg.innerText = 'Unser Server braucht heute etwas länger. Falls keine Bestätigung kommt, bitte in 30 Sekunden nochmal versuchen!';
             }, 35000);
+
             const order = {
                 bundesland: document.getElementById('bundesland').value,
                 adresse: document.getElementById('adresse').value,
@@ -543,7 +556,6 @@
             });
         }
 
-        // --- Zahlungsoptionen dynamisch anzeigen ---
         function showPaymentOptions() {
             document.getElementById("crypto-payment").innerHTML = `
                 <h2>Zahlungsmethode</h2>
@@ -572,7 +584,6 @@
             document.getElementById("crypto-payment").style.display = "block";
         }
 
-        // --- Live-Umrechnung Euro -> Krypto ---
         async function fetchCryptoPrice(symbol) {
             const ids = { BTC: 'bitcoin', ETH: 'ethereum', LTC: 'litecoin' };
             const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids[symbol]}&vs_currencies=eur`;
@@ -585,7 +596,6 @@
             }
         }
 
-        // --- Zahlungsdetails anzeigen (Klick BTC/ETH/LTC) ---
         async function payWith(crypto) {
             document.getElementById("crypto-payment").innerHTML = `
                 <h2>Zahlungsmethode: ${crypto}</h2>
@@ -604,7 +614,7 @@
                     Senden Sie bitte <b>${betrag} ${crypto}</b> an diese Wallet-Adresse:<br>
                     <span style="word-break:break-all;display:inline-block;margin: 1em 0;font-family:monospace">${WALLET[crypto]}</span>
                 </p>
-                <button onclick="showPaymentOptions()">Zurück</button>
+                <button class="confirm-btn" onclick="showPaymentOptions()">Zurück</button>
             `;
         }
     </script>
