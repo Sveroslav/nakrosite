@@ -303,7 +303,7 @@
             </div>
             <div class="product-info">
                 <h3 class="product-title">Premium Produkt</h3>
-                <p class="product-price">0.05 BTC</p>
+                <p class="product-price" id="eur-price">15 €</p>
                 <div class="quantity-selector">
                     <label for="quantity">Menge:</label>
                     <select id="quantity">
@@ -407,45 +407,51 @@
     </footer>
 
     <script>
+        // === Einstellungen ===
+        const PRICE_EUR = 15;
+        const WALLET = {
+            BTC: "DEINE_BTC_WALLET_ADDRESS",
+            ETH: "DEINE_ETH_WALLET_ADDRESS",
+            LTC: "DEINE_LTC_WALLET_ADDRESS"
+        };
+
+        // Produkt in Warenkorb -> Checkout anzeigen
         function addToCart() {
             document.getElementById("checkout").style.display = "block";
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
+        // Checkout-Formular schließen
         function closeCheckout() {
             document.getElementById("checkout").style.display = "none";
             document.getElementById("loading-message").innerText = "";
         }
 
-        // Echtzeit-Validierung für alle Felder
+        // --- Echtzeit-Validierung für alle Felder ---
         document.getElementById('adresse').addEventListener('input', function() {
             if (this.value.trim() !== '') {
                 document.getElementById('adresse-error').style.display = 'none';
                 this.style.borderColor = 'var(--primary)';
             }
         });
-
         document.getElementById('plz').addEventListener('input', function() {
             if (/^\d{5}$/.test(this.value)) {
                 document.getElementById('plz-error').style.display = 'none';
                 this.style.borderColor = 'var(--primary)';
             }
         });
-
         document.getElementById('email').addEventListener('input', function() {
             if (this.checkValidity()) {
                 document.getElementById('email-error').style.display = 'none';
                 this.style.borderColor = 'var(--primary)';
             }
         });
-
         document.getElementById('bundesland').addEventListener('change', function() {
             if (this.value !== '') {
                 document.getElementById('bundesland-error').style.display = 'none';
                 this.style.borderColor = 'var(--primary)';
             }
         });
-
         document.getElementById('wallet').addEventListener('input', function() {
             if (this.value.trim() !== '') {
                 document.getElementById('wallet-error').style.display = 'none';
@@ -453,6 +459,7 @@
             }
         });
 
+        // --- Formularvalidierung ---
         function validateForm() {
             let isValid = true;
             const fields = [
@@ -462,11 +469,9 @@
                 { id: 'email', error: 'email-error' },
                 { id: 'wallet', error: 'wallet-error' }
             ];
-
             fields.forEach(field => {
                 const element = document.getElementById(field.id);
                 const errorElement = document.getElementById(field.error);
-
                 if (field.id === 'plz') {
                     if (!/^\d{5}$/.test(element.value)) {
                         errorElement.style.display = 'block';
@@ -485,7 +490,6 @@
                     isValid = false;
                 }
             });
-
             if (isValid) {
                 confirmOrder();
             } else {
@@ -497,15 +501,14 @@
             }
         }
 
+        // --- Bestellung abschließen und Zahlungsoptionen anzeigen ---
         function confirmOrder() {
             const loadingMsg = document.getElementById('loading-message');
             loadingMsg.innerText = 'Bitte warten, die Bestellung wird verarbeitet...';
-
             // Timeout nach 35 Sekunden
             const timeoutId = setTimeout(() => {
                 loadingMsg.innerText = 'Unser Server braucht heute etwas länger. Falls keine Bestätigung kommt, bitte in 30 Sekunden nochmal versuchen!';
             }, 35000);
-
             const order = {
                 bundesland: document.getElementById('bundesland').value,
                 adresse: document.getElementById('adresse').value,
@@ -526,7 +529,7 @@
                 if (data.success) {
                     loadingMsg.innerText = 'Bestellung erfolgreich gesendet!';
                     document.getElementById("checkout").style.display = "none";
-                    document.getElementById("crypto-payment").style.display = "block";
+                    showPaymentOptions();
                     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 } else {
                     loadingMsg.innerText = 'Bestellung fehlgeschlagen!';
@@ -540,9 +543,69 @@
             });
         }
 
-        function payWith(crypto) {
-            alert(`Zahlung mit ${crypto} gestartet!`);
-            // Hier würde die Krypto-Zahlung implementiert werden
+        // --- Zahlungsoptionen dynamisch anzeigen ---
+        function showPaymentOptions() {
+            document.getElementById("crypto-payment").innerHTML = `
+                <h2>Zahlungsmethode</h2>
+                <div class="crypto-option" onclick="payWith('BTC')">
+                    <div class="crypto-icon">B</div>
+                    <div>
+                        <div class="crypto-name">Bitcoin (BTC)</div>
+                        <small>Schnell und sicher</small>
+                    </div>
+                </div>
+                <div class="crypto-option" onclick="payWith('ETH')">
+                    <div class="crypto-icon">E</div>
+                    <div>
+                        <div class="crypto-name">Ethereum (ETH)</div>
+                        <small>Smart Contracts</small>
+                    </div>
+                </div>
+                <div class="crypto-option" onclick="payWith('LTC')">
+                    <div class="crypto-icon">L</div>
+                    <div>
+                        <div class="crypto-name">Litecoin (LTC)</div>
+                        <small>Geringe Gebühren</small>
+                    </div>
+                </div>
+            `;
+            document.getElementById("crypto-payment").style.display = "block";
+        }
+
+        // --- Live-Umrechnung Euro -> Krypto ---
+        async function fetchCryptoPrice(symbol) {
+            const ids = { BTC: 'bitcoin', ETH: 'ethereum', LTC: 'litecoin' };
+            const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids[symbol]}&vs_currencies=eur`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                return 1 / data[ids[symbol]].eur;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // --- Zahlungsdetails anzeigen (Klick BTC/ETH/LTC) ---
+        async function payWith(crypto) {
+            document.getElementById("crypto-payment").innerHTML = `
+                <h2>Zahlungsmethode: ${crypto}</h2>
+                <p>Preis wird geladen...</p>
+            `;
+            const kurs = await fetchCryptoPrice(crypto);
+            if (!kurs) {
+                document.getElementById("crypto-payment").innerHTML += "<p style='color:red'>Kurs konnte nicht geladen werden.</p>";
+                return;
+            }
+            const menge = document.getElementById('quantity') ? document.getElementById('quantity').value : 1;
+            const betrag = (PRICE_EUR * kurs * menge).toFixed(6);
+            document.getElementById("crypto-payment").innerHTML = `
+                <h2>Zahlungsmethode: ${crypto}</h2>
+                <p>
+                    Senden Sie bitte <b>${betrag} ${crypto}</b> an diese Wallet-Adresse:<br>
+                    <span style="word-break:break-all;display:inline-block;margin: 1em 0;font-family:monospace">${WALLET[crypto]}</span>
+                </p>
+                <button onclick="showPaymentOptions()">Zurück</button>
+            `;
         }
     </script>
 </body>
